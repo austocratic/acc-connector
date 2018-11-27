@@ -1,0 +1,25 @@
+{
+  "name": "acc-connector",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./app",
+    "dev": "USE_LOCAL_ENV=true node ./app",
+    "test": "mocha --recursive --timeout 45000 ./tests/integration/index.js"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "debug": "^4.1.0",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "js2xmlparser": "^3.0.0",
+    "knex": "^0.15.2",
+    "mysql": "^2.16.0",
+    "stripe": "^6.15.1"
+  },
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "mocha": "^5.2.0"
+  }
+}
