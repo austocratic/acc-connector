@@ -15,7 +15,7 @@ const payoutPaid = async req => {
         date: formattedCreatedDate,
         journalid: 'STRIPE',
         title: entryDescription,
-        referenceno: '',
+        referenceno: stripeTransfer.id,
         sourceentity: '',
         customfields: '',
         lines: [
