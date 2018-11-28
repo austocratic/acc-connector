@@ -5,6 +5,7 @@ const slack = require('./libraries/slack');
 const chargeSucceeded = require('./controllers/event/stripe/chargeSucceeded').chargeSucceeded;
 const payoutPaid = require('./controllers/event/stripe/payoutPaid').payoutPaid;
 const chargeDisputeFundsWithdrawn = require('./controllers/event/stripe/chargeDisputeFundsWithdrawn').chargeDisputeFundsWithdrawn;
+const chargeDisputeFundsReinstated = require('./controllers/event/stripe/chargeDisputeFundsReinstated').chargeDisputeFundsReinstated;
 
 router.get('/api/status', (req, res) => {
     res.status(200).send('App is running');
@@ -28,6 +29,7 @@ router.post('/api/:source/:subSource', async (req, res, next) => {
                         await chargeDisputeFundsWithdrawn(req)
                     break;
                     case 'charge.dispute.funds_reinstated':
+                        await chargeDisputeFundsReinstated(req)
                     break;
                     default:
                         console.log('Info: received a stripe event for an unsupported action');
@@ -44,7 +46,7 @@ router.post('/api/:source/:subSource', async (req, res, next) => {
             username: 'acc-connector',
             icon_url: 'http://megaicons.net/static/img/icons_sizes/12/77/256/cat-grumpy-icon.png',
             channel: 'accounting-alerts',
-            text: `Failed to record a Stripe transaction ${err}`
+            text: `Failed to record a Stripe transaction for transaction ${req.body.data.object.id} with error: ${err}`
         })
 
         res.status(500).send(`Failed to post transaction: ${JSON.stringify(err)}`);

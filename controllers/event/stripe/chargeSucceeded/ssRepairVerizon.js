@@ -76,7 +76,7 @@ const ssRepairVerizon = async (details) => {
             },
             {
                 DOCUMENT: '',
-                ACCOUNTNO: '23001', TR_TYPE: '1', DEPARTMENT: '', LOCATION: '', DESCRIPTION: entryDescription, VENDORID: '', CLASSID: '',
+                ACCOUNTNO: '20031', TR_TYPE: '1', DEPARTMENT: '', LOCATION: '', DESCRIPTION: entryDescription, VENDORID: '', CLASSID: '',
                 AMOUNT: details.repair[0].tip
             }
         ]
