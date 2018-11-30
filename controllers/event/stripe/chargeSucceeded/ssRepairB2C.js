@@ -17,9 +17,26 @@ const ssRepairB2C = async (details) => {
     const formattedCreatedDate = `${(createdDate.getMonth() + 1)}/${createdDate.getDate()}/${createdDate.getFullYear()}`;
 
     const laborRate = 40;
-    const labor = numberDevices * laborRate;
-    const discount = details.repair.discount ? details.repair.discount : 0;
-    const upsell = details.repair[0].itech_subtotal - labor;
+    let labor = numberDevices * laborRate;
+
+    //console.log('DEBUG discount: ', details.repair[0].discount);
+
+    const discount = details.repair[0].discount ? details.repair[0].discount : 0;
+    
+    //If upsell calculates as < $0, then it is a downsell and should reduce the labor amount
+    //const upsell = details.repair[0].itech_subtotal - labor;
+    //If upsell is greater than 0 return the upsell, otherwise $0 upsell
+    const upsell = details.repair[0].itech_subtotal - labor > 0 ? details.repair[0].itech_subtotal - labor : 0;
+    //If there is a downsell, reduce the labor rate by the amount of downsell, otherwise $0
+    const downsell = details.repair[0].itech_subtotal - labor < 0 ? details.repair[0].itech_subtotal - labor : 0;
+    labor = labor + downsell;
+
+    // if (details.repair[0].itech_subtotal - labor > 0){
+    //     up = details.repair[0].itech_subtotal - labor
+    // } else {
+    //     up = 0;
+    //     labor = labor - 
+    // }
 
     const entry = {
         locationid: '100',
@@ -82,6 +99,8 @@ const ssRepairB2C = async (details) => {
             }
         ]
     }
+
+    console.log('Debug: entry lines: ', entry.lines);
 
     //console.log(entry)
     return await intacct.createEntry(entry);

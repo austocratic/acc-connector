@@ -1,4 +1,5 @@
 
+const intacct = require('../../../libraries/intacct');
 
 //Payout paid events are transfers from Stripe --> bank balance
 const payoutPaid = async req => {

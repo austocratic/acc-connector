@@ -17,7 +17,7 @@ const ssRepairVerizon = async (details) => {
 
     const laborRate = 45;
     const labor = numberDevices * laborRate;
-    const discount = details.repair.discount ? details.repair.discount : 0;
+    const discount = details.repair[0].discount ? details.repair[0].discount : 0;
     const upsell = details.repair[0].itech_subtotal - labor;
 
     const entry = {
@@ -25,7 +25,7 @@ const ssRepairVerizon = async (details) => {
         date: formattedCreatedDate,
         journalid: 'STRIPE',
         title: entryDescription,
-        referenceno: 'test_ref',
+        referenceno: details.stripeCharge.id,
         sourceentity: '',
         customfields: '',
         lines: [
@@ -41,7 +41,7 @@ const ssRepairVerizon = async (details) => {
             },
             {
                 DOCUMENT: details.repair[0].id,
-                ACCOUNTNO: '43107', TR_TYPE: '-1', DEPARTMENT: '', LOCATION: '', DESCRIPTION: entryDescription, VENDORID: '', CLASSID: '54',
+                ACCOUNTNO: '43107', TR_TYPE: '-1', DEPARTMENT: '', LOCATION: '', DESCRIPTION: entryDescription, VENDORID: '', CLASSID: '54', CUSTOMERID: 'CUST-14197',
                 AMOUNT: details.repair[0].subtotal
             },
             {
@@ -82,7 +82,6 @@ const ssRepairVerizon = async (details) => {
         ]
     }
 
-    console.log(entry)
     return await intacct.createEntry(entry);
 };
 

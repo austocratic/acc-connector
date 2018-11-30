@@ -26,6 +26,7 @@ const chargeSucceeded = async req => {
     const stripeTransferTransaction = await stripe.balance.retrieveTransaction(stripeTransfer.balance_transaction) 
 
     //console.log('# of records: ', repair.length)
+    //If repair is not ledger affecting, notify via slack and take no action
     if (repair[0].ledger_id === null){
         console.log('Info: a charge.succeeded event with no ledger activity (not SS)');
         
@@ -57,13 +58,15 @@ const chargeSucceeded = async req => {
             }]
         })
 
+        return 'a charge.succeeded event with no ledger activity (not SS)';
+
     } else {
         console.log(`Info: checking SS charge.succeeded event for program ${repair[0].program_id}`);
         //Check the program ID
         switch (repair[0].program_id) {
             //B2C repair
             case 1:
-                await ssRepairB2C({
+                return await ssRepairB2C({
                     repair,
                     stripeCharge,
                     stripeChargeTransaction,
@@ -73,7 +76,7 @@ const chargeSucceeded = async req => {
             break;
             //Verizon
             case 11:
-                await ssRepairVerizon({
+                return await ssRepairVerizon({
                     repair,
                     stripeCharge,
                     stripeChargeTransaction,
@@ -82,7 +85,8 @@ const chargeSucceeded = async req => {
                 })
             break;
             default:
-            console.log(`Info: received a charge.succeeded for an unsupported program ${repair[0].program_id}`);
+            //console.log(`Error: received a charge.succeeded for an unsupported program ${repair[0].program_id}`);
+                throw `Error: received a charge.succeeded for an unsupported program ${repair[0].program_id}`;
             break;
         }
     }

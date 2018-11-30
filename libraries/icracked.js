@@ -19,7 +19,7 @@ let knex  = require('knex')({
 //Get get_scale_parts records from DB
 const getRepair = async (id) =>{
     return await knex
-        .select('itech_repairs.id', 'itech_repairs.itech_id', 'itech_repairs.program_id', 'device_model.model_name', 'repair_transactions.subtotal','repair_transactions.itech_subtotal','repair_transactions.sales_tax', 'repair_transactions.tip', 'repair_service_tasks_part.part_code', 'get_scale_parts.sku', 'ledger_parts.id as ledger_id', 'dispatch_meta.postal_code')
+        .select('itech_repairs.id', 'itech_repairs.itech_id', 'itech_repairs.program_id', 'device_model.model_name', 'repair_transactions.subtotal','repair_transactions.itech_subtotal','repair_transactions.sales_tax', 'repair_transactions.tip', 'repair_transactions.discount', 'repair_service_tasks_part.part_code', 'get_scale_parts.sku', 'ledger_parts.id as ledger_id', 'dispatch_meta.postal_code')
         .from('itech_repairs')
         .leftJoin('mobile_repair', 'itech_repairs.dispatch_id', 'mobile_repair.id')
         .leftJoin('dispatch_meta', 'mobile_repair.id', 'dispatch_meta.dispatch_id')
