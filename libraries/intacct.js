@@ -11,7 +11,7 @@ const createEntry = async (details) => {
 
     let entry = {
         control: {
-            senderid: 'iCracked',
+            senderid: process.env.INTACCT_CONTROL_SENDER,
             password: process.env.INTACCT_CONTROL_PASSWORD,
             controlid: 'foobar',
             uniqueid: 'false',
@@ -20,7 +20,7 @@ const createEntry = async (details) => {
         operation: {
             authentication: {
                 login: {
-                    userid: 'xml_gateway',
+                    userid: process.env.INTACCT_LOGIN_USER_ID,
                     companyid: process.env.INTACCT_LOGIN_COMPANY_ID,
                     password: process.env.INTACCT_LOGIN_PASSWORD,
                     locationid: details.locationid
